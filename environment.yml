@@ -1,0 +1,66 @@
+# Usage:
+# 1) Create the conda environment from this file and activate it:
+#      conda env create -f environment.yml
+#      conda activate pairwise-image-model
+#
+# 2) Install PyTorch + torchvision using conda (recommended to match CUDA):
+#    - Example (CUDA 13.0):  adjust CUDA version to match your system/drivers
+#      conda install -c pytorch -c nvidia -c conda-forge pytorch torchvision pytorch-cuda=13.0 -y
+#
+#    - Example (CPU-only):
+#      conda install -c pytorch pytorch cpuonly -y
+#
+# Notes:
+# - The pip: section of this file installs non-binary Python packages (numpy, pandas, optuna, timm, etc.).
+# - PyTorch is intentionally installed separately via conda to avoid binary/CUDA solver issues.
+# - If you use 'mamba' replace 'conda' with 'mamba' for faster dependency solving:
+#      mamba env create -f environment.yml
+#
+# - To update the env after editing this file:
+#      conda env update -f environment.yml --prune
+#
+# - To remove the env:
+#      conda remove -n pairwise-image-model --all -y
+
+name: pairwise-legibility-assessment
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+
+  # NOTE: The conda dependency set is kept intentionally minimal to avoid
+  # solver conflicts. Heavy binary packages (PyTorch + CUDA) should be installed
+  # after environment creation using the recommended conda channels (pytorch +
+  # nvidia). The rest of the Python packages are installed via pip below.
+
+  # Install PyTorch (CUDA) separately AFTER creating the env. Example:
+  #   conda activate pairwise-legibility-assessment
+  #   conda install -c pytorch -c nvidia -c conda-forge pytorch torchvision pytorch-cuda=13.0 -y
+
+  # Use pip to install the remaining Python packages
+  - pip
+
+  # pip installs (will be run inside the created env)
+  # Note: opencv is provided as opencv-python on PyPI
+  - pip:
+    - timm
+    - transformers
+    - huggingface-hub
+    - numpy
+    - pandas
+    - scipy
+    - scikit-learn
+    - matplotlib
+    - pillow
+    - opencv-python
+    - networkx
+    - tqdm
+    - requests
+    - optuna
+    - pymc
+
+
+
+
