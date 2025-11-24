@@ -9,7 +9,7 @@ Usage:
 
 Notes:
     - An Optuna objective is defined around an experiment/trainer pair.
-    - The results are saved under the project `RESULTS_DIR/optuna` directory.
+    - The results are saved under the project `TUNING_DIR` directory.
     - As of the current state, the experimental configurations for which hyperparameter tuning
         shall be performed are hardcoded.
 """
@@ -21,7 +21,7 @@ import json
 import src.training.train as train
 import src.models.preprocessor as preprocessor
 import src.training.experiment as experiment
-from src.config.paths import RESULTS_DIR, IMAGES_COLLAGES
+from src.config.paths import IMAGES_COLLAGES, TUNING_DIR
 
 class OptunaTuning:
     """
@@ -45,10 +45,6 @@ class OptunaTuning:
         self.study_type = study_type
         self.epochs = 3
         self.trials = 7
-
-        # Prepare results directory for optuna outputs
-        self.optuna_dir = os.path.join(RESULTS_DIR, "optuna")
-        os.makedirs(self.optuna_dir, exist_ok=True)
 
     
     def objective(self, trial):
@@ -100,7 +96,7 @@ class OptunaTuning:
 
         # Use a dedicated optuna directory under RESULTS_DIR
         db_name = f"{study_name}.db"
-        db_path = os.path.join(self.optuna_dir, db_name)
+        db_path = os.path.join(TUNING_DIR, db_name)
 
         study = optuna.create_study(
             direction="maximize",
@@ -124,13 +120,13 @@ class OptunaTuning:
         # Save all trial results to CSV
         df = study.trials_dataframe()
         csv_name = f"optuna_results_{study_name}.csv"
-        csv_path = os.path.join(self.optuna_dir, csv_name)
+        csv_path = os.path.join(TUNING_DIR, csv_name)
         df.to_csv(csv_path, index=False)
         print(f"\n📄 All trial results saved to: {csv_path}")
 
         # Save best parameters to JSON
         json_name = f"best_params_{study_name}.json"
-        json_path = os.path.join(self.optuna_dir, json_name)
+        json_path = os.path.join(TUNING_DIR, json_name)
         with open(json_path, "w") as f:
             json.dump(study.best_trial.params, f, indent=4)
         print(f"📌 Best hyperparameters saved to: {json_path}")
