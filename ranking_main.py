@@ -6,7 +6,7 @@ This script creates rankings from ground-truth standard pairwise annotations and
 then evaluates how well the model ranking correlates with the ground-truth standard using Kendall's tau.
 
 Usage:
-    python ranking_main.py --gold-path /path/to/gold_ranking.csv --model-path /path/to/model_ranking.csv [--gold-output-dir /path/to/save_dir.csv] 
+    python ranking_main.py --gold-path /path/to/gold_pairwise_comparisons.csv --model-path /path/to/model_pairwise_comparisons.csv [--gold-output-dir /path/to/save_dir.csv] 
         [--model-output-dir /path/to/save_dir.csv] [--use-binary-pred <true|false>]
 
 Notes:
